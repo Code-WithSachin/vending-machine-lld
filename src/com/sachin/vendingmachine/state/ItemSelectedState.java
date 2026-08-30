@@ -17,6 +17,8 @@ public class ItemSelectedState implements VendingMachineState {
                 "Inserted coin: " + coin +
                         ", current amount: " + machine.getInsertedAmount()
         );
+
+        machine.setState(new MoneyInsertedState());
     }
 
     @Override
@@ -36,7 +38,8 @@ public class ItemSelectedState implements VendingMachineState {
 
         Item item = compartment.getItem();
 
-        int insertedAmount = machine.getInsertedAmount();
+        int insertedAmount =
+                machine.getInsertedAmount();
 
         if (insertedAmount < item.getPrice()) {
 
