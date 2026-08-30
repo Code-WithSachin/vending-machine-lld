@@ -2,8 +2,6 @@ package com.sachin.vendingmachine.state;
 
 import com.sachin.vendingmachine.machine.VendingMachine;
 import com.sachin.vendingmachine.model.Coin;
-import com.sachin.vendingmachine.model.Compartment;
-import com.sachin.vendingmachine.model.Item;
 
 public class ItemSelectedState implements VendingMachineState {
 
@@ -32,44 +30,9 @@ public class ItemSelectedState implements VendingMachineState {
     @Override
     public void dispense(VendingMachine machine) {
 
-        Compartment compartment =
-                machine.getInventory()
-                        .getCompartment(machine.getSelectedCompartment());
-
-        Item item = compartment.getItem();
-
-        int insertedAmount =
-                machine.getInsertedAmount();
-
-        if (insertedAmount < item.getPrice()) {
-
-            throw new IllegalStateException(
-                    "Insufficient amount. Required: " +
-                            item.getPrice() +
-                            ", inserted: " +
-                            insertedAmount
-            );
-        }
-
-        int change =
-                insertedAmount - item.getPrice();
-
-        // Check whether machine can return exact change
-        if (change > 0 &&
-                !machine.getCoinInventory()
-                        .canDispenseChange(
-                                change,
-                                machine.getInsertedCoins()
-                        )) {
-
-            throw new IllegalStateException(
-                    "Unable to return exact change: " + change
-            );
-        }
-
-        machine.setState(new DispensingState());
-
-        machine.dispense();
+        throw new IllegalStateException(
+                "Please insert enough money first"
+        );
     }
 
     @Override
