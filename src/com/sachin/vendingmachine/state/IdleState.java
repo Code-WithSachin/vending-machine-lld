@@ -1,4 +1,3 @@
-```java
 package com.sachin.vendingmachine.state;
 
 import com.sachin.vendingmachine.machine.VendingMachine;
@@ -53,4 +52,3 @@ public class IdleState implements VendingMachineState {
         );
     }
 }
-```
