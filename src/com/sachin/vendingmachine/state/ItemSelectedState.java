@@ -11,10 +11,11 @@ public class ItemSelectedState implements VendingMachineState {
     public void insertCoin(VendingMachine machine, Coin coin) {
 
         machine.addInsertedAmount(coin.getValue());
+        machine.addInsertedCoin(coin);
 
         System.out.println(
                 "Inserted coin: " + coin +
-                ", current amount: " + machine.getInsertedAmount()
+                        ", current amount: " + machine.getInsertedAmount()
         );
     }
 
@@ -31,7 +32,7 @@ public class ItemSelectedState implements VendingMachineState {
 
         Compartment compartment =
                 machine.getInventory()
-                       .getCompartment(machine.getSelectedCompartment());
+                        .getCompartment(machine.getSelectedCompartment());
 
         Item item = compartment.getItem();
 
@@ -41,9 +42,25 @@ public class ItemSelectedState implements VendingMachineState {
 
             throw new IllegalStateException(
                     "Insufficient amount. Required: " +
-                    item.getPrice() +
-                    ", inserted: " +
-                    insertedAmount
+                            item.getPrice() +
+                            ", inserted: " +
+                            insertedAmount
+            );
+        }
+
+        int change =
+                insertedAmount - item.getPrice();
+
+        // Check whether machine can return exact change
+        if (change > 0 &&
+                !machine.getCoinInventory()
+                        .canDispenseChange(
+                                change,
+                                machine.getInsertedCoins()
+                        )) {
+
+            throw new IllegalStateException(
+                    "Unable to return exact change: " + change
             );
         }
 

@@ -1,32 +1,42 @@
 package com.sachin.vendingmachine.machine;
 
+import com.sachin.vendingmachine.inventory.CoinInventory;
 import com.sachin.vendingmachine.inventory.Inventory;
+import com.sachin.vendingmachine.model.Coin;
 import com.sachin.vendingmachine.model.Compartment;
 import com.sachin.vendingmachine.model.Item;
 import com.sachin.vendingmachine.state.IdleState;
 import com.sachin.vendingmachine.state.VendingMachineState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VendingMachine {
 
     private final Inventory inventory;
+    private final CoinInventory coinInventory;
 
     private VendingMachineState state;
 
     private int insertedAmount;
+    private final List<Coin> insertedCoins;
 
     private String selectedCompartment;
 
     public VendingMachine(Inventory inventory) {
+
         this.inventory = inventory;
+        this.coinInventory = new CoinInventory();
         this.state = new IdleState();
         this.insertedAmount = 0;
+        this.insertedCoins = new ArrayList<>();
     }
 
     // --------------------------------------------------------
     // Public APIs
     // --------------------------------------------------------
 
-    public void insertCoin(com.sachin.vendingmachine.model.Coin coin) {
+    public void insertCoin(Coin coin) {
         state.insertCoin(this, coin);
     }
 
@@ -63,11 +73,12 @@ public class VendingMachine {
                 "Dispensing: " + item.getName()
         );
 
+        // Customer's coins now become part of machine inventory
+        coinInventory.addCoins(insertedCoins);
+
         // Return change
         if (change > 0) {
-            System.out.println(
-                    "Returning change: " + change
-            );
+            coinInventory.dispenseChange(change);
         }
 
         // Transaction completed
@@ -84,10 +95,10 @@ public class VendingMachine {
 
     public void returnInsertedMoney() {
 
-        if (insertedAmount > 0) {
+        for (Coin coin : insertedCoins) {
 
             System.out.println(
-                    "Returning money: " + insertedAmount
+                    "Returning coin: " + coin
             );
         }
     }
@@ -95,6 +106,7 @@ public class VendingMachine {
     public void resetTransaction() {
 
         insertedAmount = 0;
+        insertedCoins.clear();
         selectedCompartment = null;
     }
 
@@ -104,6 +116,10 @@ public class VendingMachine {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public CoinInventory getCoinInventory() {
+        return coinInventory;
     }
 
     // --------------------------------------------------------
@@ -124,6 +140,18 @@ public class VendingMachine {
 
     public int getInsertedAmount() {
         return insertedAmount;
+    }
+
+    // --------------------------------------------------------
+    // Inserted coins
+    // --------------------------------------------------------
+
+    public void addInsertedCoin(Coin coin) {
+        insertedCoins.add(coin);
+    }
+
+    public List<Coin> getInsertedCoins() {
+        return new ArrayList<>(insertedCoins);
     }
 
     // --------------------------------------------------------

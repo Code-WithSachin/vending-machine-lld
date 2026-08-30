@@ -9,10 +9,11 @@ public class IdleState implements VendingMachineState {
     public void insertCoin(VendingMachine machine, Coin coin) {
 
         machine.addInsertedAmount(coin.getValue());
+        machine.addInsertedCoin(coin);
 
         System.out.println(
                 "Inserted coin: " + coin +
-                ", current amount: " + machine.getInsertedAmount()
+                        ", current amount: " + machine.getInsertedAmount()
         );
 
         machine.setState(new MoneyInsertedState());

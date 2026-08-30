@@ -10,10 +10,11 @@ public class MoneyInsertedState implements VendingMachineState {
     public void insertCoin(VendingMachine machine, Coin coin) {
 
         machine.addInsertedAmount(coin.getValue());
+        machine.addInsertedCoin(coin);
 
         System.out.println(
                 "Inserted coin: " + coin +
-                ", current amount: " + machine.getInsertedAmount()
+                        ", current amount: " + machine.getInsertedAmount()
         );
     }
 
@@ -33,7 +34,7 @@ public class MoneyInsertedState implements VendingMachineState {
 
         System.out.println(
                 "Selected item: " +
-                compartment.getItem().getName()
+                        compartment.getItem().getName()
         );
 
         machine.setState(new ItemSelectedState());
