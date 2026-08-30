@@ -73,7 +73,8 @@ public class VendingMachine {
                 "Dispensing: " + item.getName()
         );
 
-        // Customer's coins now become part of machine inventory
+        // Customer's inserted coins become
+        // part of the machine's coin inventory.
         coinInventory.addCoins(insertedCoins);
 
         // Return change
