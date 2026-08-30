@@ -1,4 +1,3 @@
-```java
 package com.sachin.vendingmachine.state;
 
 import com.sachin.vendingmachine.machine.VendingMachine;
@@ -82,4 +81,3 @@ public class MoneyInsertedState implements VendingMachineState {
         machine.setState(new IdleState());
     }
 }
-```
