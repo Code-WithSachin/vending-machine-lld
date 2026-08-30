@@ -2,7 +2,6 @@ package com.sachin.vendingmachine.state;
 
 import com.sachin.vendingmachine.machine.VendingMachine;
 import com.sachin.vendingmachine.model.Coin;
-import com.sachin.vendingmachine.model.Compartment;
 
 public class MoneyInsertedState implements VendingMachineState {
 
@@ -21,30 +20,19 @@ public class MoneyInsertedState implements VendingMachineState {
     @Override
     public void selectItem(VendingMachine machine, String code) {
 
-        Compartment compartment =
-                machine.getInventory().getCompartment(code);
-
-        if (!compartment.isAvailable()) {
-            throw new IllegalStateException(
-                    "Item is out of stock"
-            );
-        }
-
-        machine.setSelectedCompartment(code);
-
-        System.out.println(
-                "Selected item: " +
-                        compartment.getItem().getName()
+        throw new IllegalStateException(
+                "Item already selected"
         );
-
-        machine.setState(new ItemSelectedState());
     }
 
     @Override
     public void dispense(VendingMachine machine) {
-        throw new IllegalStateException(
-                "Please select an item first"
-        );
+
+        // Payment validation and change validation
+        // are handled by ItemSelectedState.
+        machine.setState(new ItemSelectedState());
+
+        machine.dispense();
     }
 
     @Override
