@@ -1,42 +1,56 @@
+```java
 package com.sachin.vendingmachine.state;
 
 import com.sachin.vendingmachine.machine.VendingMachine;
 import com.sachin.vendingmachine.model.Coin;
+import com.sachin.vendingmachine.model.Compartment;
 
 public class IdleState implements VendingMachineState {
 
     @Override
     public void insertCoin(VendingMachine machine, Coin coin) {
 
-        machine.addInsertedAmount(coin.getValue());
-        machine.addInsertedCoin(coin);
-
-        System.out.println(
-                "Inserted coin: " + coin +
-                        ", current amount: " + machine.getInsertedAmount()
+        throw new IllegalStateException(
+                "Please select an item before inserting money"
         );
-
-        machine.setState(new MoneyInsertedState());
     }
 
     @Override
     public void selectItem(VendingMachine machine, String code) {
-        throw new IllegalStateException(
-                "Please insert money before selecting an item"
+
+        Compartment compartment =
+                machine.getInventory().getCompartment(code);
+
+        if (compartment.getQuantity() <= 0) {
+            throw new IllegalStateException(
+                    "Item is out of stock"
+            );
+        }
+
+        machine.setSelectedCompartment(code);
+
+        System.out.println(
+                "Selected item: " +
+                        compartment.getItem().getName()
         );
+
+        machine.setState(new ItemSelectedState());
     }
 
     @Override
     public void dispense(VendingMachine machine) {
+
         throw new IllegalStateException(
-                "Please insert money and select an item"
+                "Please select an item and insert money"
         );
     }
 
     @Override
     public void cancel(VendingMachine machine) {
+
         throw new IllegalStateException(
                 "No active transaction"
         );
     }
 }
+```
