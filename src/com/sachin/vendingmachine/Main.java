@@ -52,11 +52,12 @@ public class Main {
 
         System.out.println("\n--- Test 1: Exact Payment ---");
 
+        machine.selectItem("A1");
+
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.FIVE);
 
-        machine.selectItem("A1");
         machine.dispenseItem();
 
 
@@ -66,10 +67,11 @@ public class Main {
 
         System.out.println("\n--- Test 2: Exact Payment ---");
 
+        machine.selectItem("A2");
+
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.TEN);
 
-        machine.selectItem("A2");
         machine.dispenseItem();
 
 
@@ -79,11 +81,12 @@ public class Main {
 
         System.out.println("\n--- Test 3: Payment with Change ---");
 
+        machine.selectItem("A1");
+
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.TEN);
 
-        machine.selectItem("A1");
         machine.dispenseItem();
 
 
@@ -92,6 +95,8 @@ public class Main {
         // ====================================================
 
         System.out.println("\n--- Test 4: Cancel Transaction ---");
+
+        machine.selectItem("A1");
 
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.FIVE);
@@ -105,8 +110,9 @@ public class Main {
 
         System.out.println("\n--- Test 5: Insufficient Payment ---");
 
-        machine.insertCoin(Coin.TEN);
         machine.selectItem("A1");
+
+        machine.insertCoin(Coin.TEN);
 
         try {
 
@@ -130,7 +136,7 @@ public class Main {
 
         try {
 
-            machine.selectItem("A1");
+            machine.dispenseItem();
 
         } catch (IllegalStateException e) {
 
@@ -146,8 +152,6 @@ public class Main {
 
         System.out.println("\n--- Test 7: Invalid Item Code ---");
 
-        machine.insertCoin(Coin.TEN);
-
         try {
 
             machine.selectItem("INVALID");
@@ -157,8 +161,6 @@ public class Main {
             System.out.println(
                     "Expected error: " + e.getMessage()
             );
-
-            machine.cancel();
         }
 
 
@@ -183,11 +185,12 @@ public class Main {
                 "\n--- Test 9: Purchase after Restocking ---"
         );
 
+        machine.selectItem("A1");
+
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.TEN);
         machine.insertCoin(Coin.FIVE);
 
-        machine.selectItem("A1");
         machine.dispenseItem();
 
 
